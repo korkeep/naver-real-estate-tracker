@@ -32,7 +32,7 @@
 1. **프로젝트 복사**  
    GitHub에서 프로젝트를 클론합니다.
    ```bash
-   git clone https://github.com/your-username/real-estate-tracker.git
+   git clone https://github.com/korkeep/real-estate-tracker.git
    cd real-estate-tracker
    ```
 
