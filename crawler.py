@@ -24,12 +24,6 @@ apt_code = {
     419: "대청아파트"
 }
 
-
-apt_code_name_mapping = {
-    483: "대치2단지아파트",
-    419: "대청아파트"
-}
-
 # URL 템플릿
 URL_TEMPLATE = "https://new.land.naver.com/api/articles/complex/{apt_code}?tradeType=A1&priceMin=0&priceMax=120000&areaMin=44&areaMax=85&minHouseHoldCount=300&page={page}&order=prc"
 
@@ -40,7 +34,7 @@ all_data = []
 for code in apt_code:
 
     # 아파트 코드에 해당하는 이름 얻기
-    apt_name = apt_code_name_mapping.get(code)
+    apt_name = apt_code.get(code)
     print(f"### 시작: {apt_name} ###")
 
     page = 1
