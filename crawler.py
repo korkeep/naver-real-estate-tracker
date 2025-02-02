@@ -1,8 +1,6 @@
 import requests
-import csv
-from datetime import datetime
-import os
 from dotenv import load_dotenv
+from utils import *
 
 # .env에서 ACCESS_TOKEN 불러오기
 load_dotenv()
@@ -63,7 +61,8 @@ for code in apt_code:
         properties = []
         for article in data['articleList']:
             property_data = {
-                '날짜': article['articleConfirmYmd'],
+                '날짜': parse_date(),
+                '등록날짜': parse_date(article['articleConfirmYmd']),
                 '매물명': article['articleName'],
                 '거래유형': article['tradeTypeName'],
                 '면적': f"{article['areaName']}",
@@ -91,29 +90,6 @@ for code in apt_code:
 
 # 결과 출력
 print(f"총 {len(all_data)}개의 데이터가 수집되었습니다.")
-
-# CSV 파일로 저장
-def save_to_csv(properties):
-    # /data/ 디렉토리 확인 및 생성
-    data_dir = './data'
-    if not os.path.exists(data_dir):
-        os.makedirs(data_dir)
-
-    # 날짜 형식 지정 (YYMMDD)
-    date_str = datetime.now().strftime('%y%m%d')
-    # 파일 경로: /data/[YYMMDD]_data.csv
-    csv_file = f"{data_dir}/{date_str}_data.csv"
-    
-    # CSV 파일 헤더
-    fieldnames = ['날짜', '매물명', '거래유형', '면적', '호가', '가격변경', '동', '층', '향']
-    
-    # 파일 존재 여부 확인 후 작성
-    with open(csv_file, mode='w', newline='', encoding='utf-8') as file:
-        writer = csv.DictWriter(file, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(properties)
-    
-    print(f"수집된 데이터를 CSV 파일로 저장했습니다: {csv_file}")
 
 # CSV로 저장
 save_to_csv(all_data)
