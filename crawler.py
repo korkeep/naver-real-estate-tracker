@@ -61,7 +61,7 @@ for code in apt_code:
         properties = []
         for article in data['articleList']:
             property_data = {
-                '날짜': parse_date(),
+                '수집날짜': parse_date(),
                 '등록날짜': parse_date(article['articleConfirmYmd']),
                 '매물명': article['articleName'],
                 '거래유형': article['tradeTypeName'],
