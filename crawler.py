@@ -4,35 +4,46 @@ from utils import *
 
 # .env에서 ACCESS_TOKEN 불러오기
 load_dotenv()
-access_token = os.getenv("ACCESS_TOKEN")
+ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
 
-# API 호출 헤더
-headers = {
+# HEADERS: API 호출 헤더
+HEADERS = {
     'authority': 'new.land.naver.com',
     'accept': '*/*',
     'accept-language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
-    'authorization': f'Bearer {access_token}',  # .env에서 불러온 토큰 사용
+    'authorization': f'Bearer {ACCESS_TOKEN}',  # .env에서 불러온 토큰 사용
     'referer': 'https://new.land.naver.com/complexes/',
     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
 }
 
-# 아파트 고유번호와 아파트 이름 매칭
-apt_code = {
-    483: "대치2단지아파트",
-    419: "대청아파트"
+# APT_CODE: 아파트 고유번호와 아파트 이름 매칭
+APT_CODE = {
+    483: "대치2단지",
+    419: "개포대청",
+    668: "수서삼익",
+    671: "수서신동아",
+    827: "수서1단지",
+    348: "가락우성"
 }
 
 # URL 템플릿
-URL_TEMPLATE = "https://new.land.naver.com/api/articles/complex/{apt_code}?tradeType=A1&priceMin=0&priceMax=120000&areaMin=44&areaMax=85&minHouseHoldCount=300&page={page}&order=prc"
+# apt_code: 고유번호
+# tradetype=A1: 거래유형 매매
+# areaMin=44: 최소면적 44
+# areaMax=85: 최대면적 85
+# minHouseHoldCount=300: 최소세대수 300세대
+# page: 화면에 출력되는 페이지, 1페이지당 20개 데이터
+# order=prc: 낮은가격순 정렬
+URL_TEMPLATE = "https://new.land.naver.com/api/articles/complex/{apt_code}?tradeType=A1&areaMin=44&areaMax=85&minHouseHoldCount=300&page={page}&order=prc"
 
 # 전체 데이터 저장할 리스트
 all_data = []
 
 # 각 아파트에 대해 데이터 받아오기
-for code in apt_code:
+for code in APT_CODE:
 
     # 아파트 코드에 해당하는 이름 얻기
-    apt_name = apt_code.get(code)
+    apt_name = APT_CODE.get(code)
     print(f"### 시작: {apt_name} ###")
 
     page = 1
@@ -63,7 +74,7 @@ for code in apt_code:
             property_data = {
                 '수집날짜': parse_date(),
                 '등록날짜': parse_date(article['articleConfirmYmd']),
-                '매물명': article['articleName'],
+                '매물명': apt_name,
                 '거래유형': article['tradeTypeName'],
                 '면적': f"{article['areaName']}",
                 '호가': article['dealOrWarrantPrc'],
