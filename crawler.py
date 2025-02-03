@@ -52,7 +52,7 @@ for code in APT_CODE:
         URL = URL_TEMPLATE.format(apt_code=code, page=page)
         
         # API 호출
-        response = requests.get(URL, headers=headers)
+        response = requests.get(URL, headers=HEADERS)
         
         # 응답 상태 코드 확인
         if response.status_code != 200:
@@ -77,7 +77,7 @@ for code in APT_CODE:
                 '매물명': apt_name,
                 '거래유형': article['tradeTypeName'],
                 '면적': f"{article['areaName']}",
-                '호가': article['dealOrWarrantPrc'],
+                '호가': convert_price_to_numeric(article['dealOrWarrantPrc']),
                 '가격변경': article['priceChangeState'],
                 '동': article['buildingName'],
                 '층': article['floorInfo'],
