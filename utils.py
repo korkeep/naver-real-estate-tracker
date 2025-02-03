@@ -36,3 +36,26 @@ def save_to_csv(properties):
         writer.writerows(properties)
     
     print(f"수집된 데이터를 CSV 파일로 저장했습니다: {csv_file}")
+
+# '호가'를 숫자 형식으로 변환하는 함수
+def convert_price_to_numeric(price_str):
+    try:
+        # 쉼표 제거
+        price_str = price_str.replace(",", "")
+        
+        # '억' 단위 처리
+        if "억" in price_str:
+            price_str = price_str.replace("억", "")
+            parts = price_str.split(" ")  # 공백으로 나누기
+            if len(parts) == 1:  # 예: "11억"
+                price_value = float(parts[0])  # 그대로 float로 변환
+            elif len(parts) == 2:  # 예: "10억 7,000"
+                price_value = float(parts[0]) + (int(parts[1]) / 10000)  # 억 + 만 단위로 변환
+            return price_value
+        
+        else:
+            return None
+    
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
