@@ -5,6 +5,7 @@ import matplotlib.dates as mdates
 import glob
 import os
 from dotenv import load_dotenv
+import re
 
 # .env 파일 로드
 load_dotenv()
@@ -39,12 +40,6 @@ def plot_price_change(data):
     # 아파트별로 데이터를 그룹화
     grouped_by_apt = data.groupby('매물명')
     
-    # 아파트별로 그룹화된 데이터 확인
-    #for apt, group in grouped_by_apt:
-    #    print(f'--- {apt} 아파트 ---')
-    #    print(group.head())  # 각 아파트별 데이터의 처음 5개 행 출력
-    #    print("\n")  # 구분을 위해 줄바꿈 추가
-    
     # 아파트별로 시각화
     for apt, group in grouped_by_apt:
         plt.figure(figsize=(12, 6))
@@ -52,30 +47,26 @@ def plot_price_change(data):
         # 면적별로 그룹화
         grouped_by_area = group.groupby('면적')
 
-        # 면적별로 그룹화된 데이터 확인
-        #for area, area_group in grouped_by_area:
-        #    print(f'--- {area} 면적 ---')
-        #    print(area_group.head())  # 각 면적별 데이터의 처음 5개 행 출력
-        #    print("\n")  # 구분을 위해 줄바꿈 추가
-        
         # 면적별로 가격을 시각화
         for area, area_group in grouped_by_area:
+            
+            # 숫자가 아닌 부분은 제거하고 정수형으로 변환
+            area = int(re.sub(r'\D', '', str(area))) 
+
             # 최저 가격, 최고 가격, 평균 가격 계산
             min_price = area_group['호가'].min()
             max_price = area_group['호가'].max()
             mean_price = area_group['호가'].mean()
 
             # 면적별 색상 설정
-            if area == 46:
-                color = 'blue'
-            elif area == 56:
-                color = 'green'
-            elif area == 69:
-                color = 'orange'
-            elif area == 81:
-                color = 'red'
+            if area < 50:
+                color = 'lightblue'  # 15평 이하
+            elif area < 66:
+                color = 'lightgreen'  # 20평 이하
+            elif area < 82:
+                color = 'lightyellow'  # 25평 이하
             else:
-                color = 'gray'
+                color = 'lightcoral'  # 이외
 
             # 면적별 가격 영역 표시 (최저, 최고 가격)
             plt.fill_between([area_group['수집날짜'].min(), area_group['수집날짜'].max()], min_price, max_price, 
