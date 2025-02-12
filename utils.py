@@ -237,23 +237,23 @@ def plot_price_change(data):
 
             # 면적별 색상 설정
             if area < 50:
-                color = 'lightblue'  # 15평 이하
+                color = '#3498db'  # 15평 이하 (밝은 파랑)
             elif area < 66:
-                color = 'lightgreen'  # 20평 이하
+                color = '#2ecc71'  # 20평 이하 (밝은 초록)
             elif area < 82:
-                color = 'lightyellow'  # 25평 이하
+                color = '#f39c12'  # 25평 이하 (밝은 노랑)
             else:
-                color = 'lightcoral'  # 이외
+                color = '#e74c3c'  # 이외 (밝은 빨강)
 
             # 면적별 가격 영역 표시 (최저, 최고 가격)
             plt.fill_between([area_group['수집날짜'].min(), area_group['수집날짜'].max()], min_price, max_price, 
-                             color=color, alpha=0.3, label=f'{area} 면적 범위')
+                             color=color, alpha=0.4, label=f'{area} 범위')
 
-            # 면적별 평균 가격을 점선으로 표시
-            plt.axhline(mean_price, color=color, linestyle='--', label=f'{area} 면적 평균')
+            # 평균 가격에 해당하는 날짜들에 점 찍기
+            plt.plot(area_group['수집날짜'], [mean_price] * len(area_group), 'o-', color=color, label=f'{area} 평균')
 
         # 그래프 제목 및 레이블 설정
-        plt.title(f'{apt} 아파트 가격 변동 - 면적별 가격 범위 및 평균')
+        plt.title(f'{apt} 호가 변동')
         plt.xlabel('날짜')
         plt.ylabel('호가 (억원)')
         
@@ -262,6 +262,12 @@ def plot_price_change(data):
         
         # X축 라벨 회전
         plt.xticks(rotation=45)
-        plt.tight_layout()
-        plt.legend(title="면적별 가격 범위 및 평균", loc='upper left', bbox_to_anchor=(1, 1))
+
+        # 여백 조정 (범례가 잘 보이도록)
+        plt.subplots_adjust(right=0.8)  # 오른쪽 여백을 더 많이 줌
+
+        # 범례 표시
+        plt.legend(title="호가 범위 및 평균", loc='upper left', bbox_to_anchor=(1.05, 1))
+
+        # 그래프 표시
         plt.show()
