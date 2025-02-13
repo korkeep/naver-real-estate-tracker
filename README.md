@@ -4,6 +4,8 @@
 
 **Real Estate Tracker**는 네이버 부동산의 데이터를 CSV 파일로 저장하고 가격 변동을 시각적으로 분석하는 프로젝트입니다. 도움이 되셨다면, ⭐ `Star`를 주셔서 응원해주세요! 
 
+![Image](https://github.com/user-attachments/assets/5872849b-53f4-4730-a1c8-d46fe779d527)
+
 ## 기능
 
 - **정보 수집**: 네이버 부동산에서 특정 매물의 호가 정보를 주기적으로 수집합니다.
